@@ -14,25 +14,20 @@ services:
   backend:
     image: antonidasrus/kittygram_backend
     env_file: .env
-    depends_on:
-      - db
     volumes:
       - static:/backend_static
-      - media:/media/
+      - media:/media
   frontend:
-    env_file: .env
     image: antonidasrus/kittygram_frontend
-    command: cp -r /app/build/. /static/
+    env_file: .env
+    command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
   gateway:
     image: antonidasrus/kittygram_gateway
     env_file: .env
-#    depends_on:
-#      - frontend
-#      - backend
+    volumes:
+      - static:/staticfiles
+      - media:/media
     ports:
       - 9000:80
-    volumes:
-      - static:/static
-      - media:/media/
